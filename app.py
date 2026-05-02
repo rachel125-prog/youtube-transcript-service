@@ -13,8 +13,9 @@ def get_transcript():
     if not video_id:
         return jsonify({'error': 'video_id required'}), 400
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        text = ' '.join([t['text'] for t in transcript])
+        ytt_api = YouTubeTranscriptApi()
+        transcript = ytt_api.fetch(video_id)
+        text = ' '.join([t.text for t in transcript])
         return jsonify({'transcript': text})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
